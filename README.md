@@ -44,7 +44,4 @@ compile 'com.hebin:hxbdialog:1.0.0'
                 dialog.dismiss()
             }
 ```
-因为工具类，接收的是layout，所以，基本上所有的dialog都是可以创建的，dialog的布局，在layout上实现，逻辑操作在拿到dialog之后，即可进行操作。这个工具类的详细使用，参考上面即可，如果还有不懂的，可以到[github][1]上下载Demo运行，或者给我留言。
-
-
-[1]: https://github.com/Hebin320/HxbDialog
+因为工具类，接收的是layout，所以，基本上所有的dialog都是可以创建的，dialog的布局，在layout上实现，逻辑操作在拿到dialog之后，即可进行操作。
