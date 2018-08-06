@@ -1,105 +1,50 @@
-# 前言
-二维码扫描的功能在很多APP上都会出现，较为常用的第三方库是zxing，zxing很强大，但是有时候我们并不需要那么复杂的功能，只需要简单的扫描、生成以及处理扫描结果，一般都是通过重写几个类来实现项目需求。我开发了几个项目都用到了扫描二维码的功能，第一个项目，写了个完整的功能，之后的项目都是从第一个项目里面复制代码的，几次之后，觉得有点繁琐，所以就单独封装成一个项目，传到jcenter上，以后再遇到扫描二维码的功能，只需要在gradle导入，即可实现快速开发了。
-
+#前言
+在实际开发中，如果遇到多次使用同一个功能，那么我们会把这个功能封装成一个模块，方便在日后开发中调用。功能模块有很多种，其中，最为常用的，应该就是dialog模块。请求成功要弹框、请求失败要弹框、权限不足要弹框、没登录要弹框、会员也要弹框，在APP开发中，弹框几乎是无处不在的。那么，如果每个弹框都要手写，那工作量是巨大的。所以，我就自己封装了一个通用的，创建dialog的工具类，方便于快速开发一个dialog。
 <h3>导入</h3>
 
 ```
-compile 'com.hebin:hxbrzxing:1.0.1'
+compile 'com.hebin:hxbdialog:1.0.0'
 ```
 <h3>使用</h3>
-导入库之后，就可以使用扫描二维码的功能了，只需要新建一个activity，然后继承CaptureActivity即可。
+导入库之后，就可以使用了，具体使用如下：
 
 ```
-class MainActivity : CaptureActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-}
-
+	val dialog = UniversalDialog
+                    .setContext(this@MainActivity)
+                    // 设置dialog布局
+                    .setLayoutId(R.layout.dialog_test)
+                    // 设置dialog的Gravity
+                    .setGravity(Gravity.TOP or Gravity.RIGHT)
+                    /*
+                    * 设置dialog类型
+                    *  <p>
+                    * WIDTH_MATCH_PARENT 宽度全屏、高度自适应
+                    * <p>
+                    * HEIGHT_MATCH_PARENT 高度全屏、宽度自适应
+                    * <p>
+                    * ALL_WRAP_CONTENT 宽、高自适应
+                    * <p>
+                    * ALL_MATCH_PARENT宽、高全屏
+                    * */
+                    .setType(UniversalDialog.ALL_WRAP_CONTENT)
+                    // 背景是否透明、不设置则背景模糊
+                    .setTransparent()
+                    // 点击dialog其他地方，dialog是否消失，true为可消失、false为不可消失
+                    .setCanceledOnTouchOutside(true)
+                    // 设置dialog的弹出、消失动画
+                    .setAnimations(R.style.dialog_scale)
+                    // 设置dialogY轴距离
+                    .setMarginY(resources.getDimension(R.dimen.dp_10).toInt())
+                    // 设置dialogX轴距离
+                    .setMarginX(resources.getDimension(R.dimen.dp_10).toInt())
+                    // 显示dialog
+                    .show()
+            dialog.tvTest.setOnClickListener {
+                Toast.makeText(this@MainActivity, "点击了测试标题", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
 ```
-<h3>自定义使用</h3>
+因为工具类，接收的是layout，所以，基本上所有的dialog都是可以创建的，dialog的布局，在layout上实现，逻辑操作在拿到dialog之后，即可进行操作。这个工具类的详细使用，参考上面即可，如果还有不懂的，可以到[github][1]上下载Demo运行，或者给我留言。
 
-这里提供了几个可以自定义的属性；
 
- **1. 标题栏自定义**
-
-```
-class MainActivity : CaptureActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.simple_title,null)
-        setTitleView(view)
-    }
-}
-
-```
- **2. 背景图片自定义**
- 
-
-```
-class MainActivity : CaptureActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setBackground(R.mipmap.ic_launcher)
-    }
-}
-
-```
- **3. 提示文字自定义**
- 
-
-```
-class MainActivity : CaptureActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setTipText("请扫描二维码")
-    }
-}
-```
- **4. 附加功能**
- 
-
-```
-class MainActivity : CaptureActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val view= LayoutInflater.from(this@MainActivity).inflate(R.layout.simple_title,null)
-        // 打开相册，识别图片二维码
-        view.tvTitle.setOnClickListener { openPhoto() }
-        // 打开闪光灯
-        view.tvTitle.setOnClickListener { openLight() }
-        setTitleView(view)
-    }
-
-}
-```
-<h3>扫描结果处理</h3>
-继承CaptureActivity.ResultListener，并且在oncreat里面，写上setListener(this)即可实现监听，然后在onResult里面做逻辑处理。
-
-```
-class MainActivity : CaptureActivity(), CaptureActivity.ResultListener {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setListener(this)
-    }
-
-    override fun onResult(result: String) {
-        if (result.contains("http")) {
-            Toast.makeText(this@MainActivity, "跳转到网页", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this@MainActivity, "这个二维码不是网页", Toast.LENGTH_SHORT).show()
-        }
-    }
-}
-```
-# 后话
-至此，只要通过简单的几行代码就实现扫描二维码的功能，而且这个扫描二维码的功能，是支持连续扫描的，不需要退出重新进入即可再次扫描。项目源码已经传到[github][1]上了。
-
-[1]: https://github.com/Hebin320/Zxing
-
+[1]: https://github.com/Hebin320/HxbDialog
