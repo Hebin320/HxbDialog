@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.0.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -61,7 +61,7 @@ publish {
     artifactId = 'hxbdialog'
     publishVersion = '1.0.0'
     desc = 'This is a tool that helps developers develop Dialog quickly.'
-    website = 'https://github.com/Hebin320/Zxing'
+    website = 'https://github.com/Hebin320/HxbDialog'
 }
 
 

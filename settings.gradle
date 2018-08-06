@@ -1,1 +1,1 @@
-include ':app', ':hxbdialog', ':app'
+include ':app', ':hxbdialog', ':app', ':app'

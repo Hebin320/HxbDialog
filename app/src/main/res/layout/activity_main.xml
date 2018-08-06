@@ -5,7 +5,19 @@
     android:id="@+id/llMainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#345678"
+    >
+
+    <Button
+        android:id="@+id/btnShow"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:text="弹框"
+        android:textColor="#FFF"
+        android:textSize="16sp" />
 
 </LinearLayout>
