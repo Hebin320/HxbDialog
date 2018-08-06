@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.Toast
 import com.hebin.dialog.UniversalDialog
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_test.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         btnShow.setOnClickListener {
-            UniversalDialog
+            val dialog = UniversalDialog
                     .setContext(this@MainActivity)
                     // 设置dialog布局
                     .setLayoutId(R.layout.dialog_test)
@@ -44,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                     .setMarginX(resources.getDimension(R.dimen.dp_10).toInt())
                     // 显示dialog
                     .show()
+            dialog.tvTest.setOnClickListener {
+                Toast.makeText(this@MainActivity, "点击了测试标题", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+            }
         }
     }
 }
